@@ -18,6 +18,11 @@
   		</feature>
   	</config-file>
 
+    <config-file target="res/values/strings.xml" parent="/*">
+			<string name="ApiKey" translatable="false">your_api_key</string>
+			<string name="AppId" translatable="false">your_app_id</string>
+		</config-file>
+
   	<source-file src="platforms/android/src/com/swrve/SwrvePlugin.java" target-dir="src/com/swrve/" />
   	<framework src="platforms/android/build.gradle" custom="true" type="gradleReference" />
 
@@ -37,6 +42,15 @@
         <param name="onload" value="true" />
       </feature>
     </config-file>
+    <config-file target="*-Info.plist" parent="ApiKey">
+			<string>your_api_key</string>
+		</config-file>
+		<config-file target="*-Info.plist" parent="AppId">
+			<integer>your_app_id</integer>
+		</config-file>
+
+    <header-file src="platforms/ios/CDVAppDelegate+Swizzling.h" />
+    <source-file src="platforms/ios/CDVAppDelegate+Swizzling.m" />
 
     <header-file src="platforms/ios/SwrvePlugin.h" />
     <source-file src="platforms/ios/SwrvePlugin.m" />
@@ -166,6 +180,5 @@
     <source-file src="platforms/ios/SwrveSDK/SwrveSDK/SDK/Track/SwrveResourceManager.m" target-dir="SwrveSDK/SDK/Track/SwrveResourceManager.m"/>
     <header-file src="platforms/ios/SwrveSDK/SwrveSDK/SDK/Track/SwrveSwizzleHelper.h" target-dir="SwrveSDK/SDK/Track/SwrveSwizzleHelper.h"/>
     <source-file src="platforms/ios/SwrveSDK/SwrveSDK/SDK/Track/SwrveSwizzleHelper.m" target-dir="SwrveSDK/SDK/Track/SwrveSwizzleHelper.m"/>
-
   </platform>
 </plugin>
