@@ -6,6 +6,9 @@
   <license>Apache 2.0</license>
   <keywords>swrve,analytics,messaging</keywords>
 
+  <preference name="APP_ID" default="1"/>
+	<preference name="API_KEY" default="Your_Api_Key"/>
+
 	<platform name="android">
     <js-module src="js/swrve-android.js" name="SwrvePlugin">
       <clobbers target="SwrvePlugin"/>
@@ -19,8 +22,8 @@
   	</config-file>
 
     <config-file target="res/values/strings.xml" parent="/*">
-			<string name="ApiKey" translatable="false">your_api_key</string>
-			<string name="AppId" translatable="false">your_app_id</string>
+			<string name="ApiKey" translatable="false">$API_KEY</string>
+			<string name="AppId" translatable="false">$APP_ID</string>
 		</config-file>
 
   	<source-file src="platforms/android/src/com/swrve/SwrvePlugin.java" target-dir="src/com/swrve/" />
@@ -42,11 +45,12 @@
         <param name="onload" value="true" />
       </feature>
     </config-file>
+
     <config-file target="*-Info.plist" parent="ApiKey">
-			<string>your_api_key</string>
+			<string>$API_KEY</string>
 		</config-file>
 		<config-file target="*-Info.plist" parent="AppId">
-			<integer>your_app_id</integer>
+			<integer>$APP_ID</integer>
 		</config-file>
 
     <header-file src="platforms/ios/CDVAppDelegate+Swizzling.h" />
