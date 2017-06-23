@@ -3,9 +3,11 @@ package com.swrve;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.webkit.ValueCallback;
 
 import org.apache.cordova.engine.SystemWebView;
@@ -80,6 +82,7 @@ public class SwrvePlugin extends CordovaPlugin {
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        createSwrveInstance();
         super.initialize(cordova, webView);
         // Activity started
         SwrveSDK.onCreate(cordova.getActivity());
@@ -87,6 +90,40 @@ public class SwrvePlugin extends CordovaPlugin {
         Map<String, String> userUpdateWrapperVersion = new HashMap<String, String>();
         userUpdateWrapperVersion.put("swrve.wrapper_version", VERSION);
         SwrveSDK.userUpdate(userUpdateWrapperVersion);
+    }
+
+    private void createSwrveInstance() {
+        SwrveConfig config = new SwrveConfig();
+        int appId = getAppIdFromResource("AppId");
+        String appKey = getResource("ApiKey");
+        SwrvePlugin.createInstance(cordova.getActivity().getApplicationContext(), appId, appKey, config);
+    }
+
+    private int getAppIdFromResource(String resourceName) {
+        String appId = getResource(resourceName);
+        try{
+            return Integer.parseInt(appId);
+        } catch (Exception ex) {
+            Log.e("SwrvePlugin", "AppId should be a number");
+        }
+
+        return 0;
+    }
+
+    private String getResource(String resourceName){
+        Activity context = cordova.getActivity();
+        Resources r = context.getResources();
+        String resourceValue = null;
+        int resource = locateResource(context, resourceName, "string");
+        if (resource != 0) {
+            resourceValue =  r.getString(resource);
+        }
+
+        return resourceValue;
+    }
+
+    private int locateResource(Activity context, String resourceName, String resourceType) {
+        return context.getResources().getIdentifier(resourceName, resourceType, context.getPackageName());
     }
 
     private HashMap<String, String> getMapFromJSON(JSONObject json) throws JSONException {
