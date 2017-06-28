@@ -96,6 +96,11 @@ public class SwrvePlugin extends CordovaPlugin {
         SwrveConfig config = new SwrveConfig();
         int appId = getAppIdFromResource("AppId");
         String appKey = getResource("ApiKey");
+        String senderId = getResource("SenderId");
+        if (!senderId.trim().isEmpty()) {
+            config.setSenderId(senderId);
+        }
+
         SwrvePlugin.createInstance(cordova.getActivity().getApplicationContext(), appId, appKey, config);
     }
 
