@@ -6,28 +6,38 @@
   <license>Apache 2.0</license>
   <keywords>swrve,analytics,messaging</keywords>
 
-	<platform name="android">
+  <preference name="APP_ID" />
+  <preference name="API_KEY" />
+  <preference name="SENDER_ID" default=" "/>
+
+  <platform name="android">
     <js-module src="js/swrve-android.js" name="SwrvePlugin">
       <clobbers target="SwrvePlugin"/>
     </js-module>
 
     <config-file target="res/xml/config.xml" parent="/*">
-  	  <feature name="SwrvePlugin">
-  		  <param name="android-package" value="com.swrve.SwrvePlugin"/>
+      <feature name="SwrvePlugin">
+        <param name="android-package" value="com.swrve.SwrvePlugin"/>
         <param name="onload" value="true" />
-  		</feature>
-  	</config-file>
+      </feature>
+    </config-file>
 
-  	<source-file src="platforms/android/src/com/swrve/SwrvePlugin.java" target-dir="src/com/swrve/" />
-  	<framework src="platforms/android/build.gradle" custom="true" type="gradleReference" />
+    <config-file target="res/values/strings.xml" parent="/*">
+      <string name="ApiKey" translatable="false">$API_KEY</string>
+      <string name="AppId" translatable="false">$APP_ID</string>
+      <string name="SenderId" translatable="false">$SENDER_ID</string>
+    </config-file>
+
+    <source-file src="platforms/android/src/com/swrve/SwrvePlugin.java" target-dir="src/com/swrve/" />
+    <framework src="platforms/android/build.gradle" custom="true" type="gradleReference" />
 
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.INTERNET"/>
       <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     </config-file>
-	</platform>
+  </platform>
 
-	<platform name="ios">
+  <platform name="ios">
     <js-module src="js/swrve-ios.js" name="SwrvePlugin">
       <clobbers target="SwrvePlugin"/>
     </js-module>
@@ -37,6 +47,16 @@
         <param name="onload" value="true" />
       </feature>
     </config-file>
+
+    <config-file target="*-Info.plist" parent="ApiKey">
+      <string>$API_KEY</string>
+    </config-file>
+    <config-file target="*-Info.plist" parent="AppId">
+      <integer>$APP_ID</integer>
+    </config-file>
+
+    <header-file src="platforms/ios/CDVAppDelegate+Swizzling.h" />
+    <source-file src="platforms/ios/CDVAppDelegate+Swizzling.m" />
 
     <header-file src="platforms/ios/SwrvePlugin.h" />
     <source-file src="platforms/ios/SwrvePlugin.m" />
@@ -166,6 +186,5 @@
     <source-file src="platforms/ios/SwrveSDK/SwrveSDK/SDK/Track/SwrveResourceManager.m" target-dir="SwrveSDK/SDK/Track/SwrveResourceManager.m"/>
     <header-file src="platforms/ios/SwrveSDK/SwrveSDK/SDK/Track/SwrveSwizzleHelper.h" target-dir="SwrveSDK/SDK/Track/SwrveSwizzleHelper.h"/>
     <source-file src="platforms/ios/SwrveSDK/SwrveSDK/SDK/Track/SwrveSwizzleHelper.m" target-dir="SwrveSDK/SDK/Track/SwrveSwizzleHelper.m"/>
-
   </platform>
 </plugin>
